@@ -27,6 +27,7 @@ This environment simulates that workflow and trains/evaluates an AI agent that m
 4. Provide reasoning
 
 ## 🔍 Example Interaction
+This environment uses synthetic but realistic patient scenarios to simulate clinical decision workflows while ensuring privacy, reproducibility, and deterministic evaluation.
 
 Simple eligibility scenario (non-technical view):
 
