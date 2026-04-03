@@ -1,0 +1,60 @@
+name: clinical-trial-patient-matching
+description: >-
+  A self-contained OpenEnv environment for clinical trial eligibility decisions.
+  Agents review structured synthetic patient records and trial criteria,
+  then choose MATCH, REJECT, or REQUEST_INFO with reasoning.
+version: 1.0.0
+entrypoint: env.environment:ClinicalTrialPatientMatchingEnvironment
+
+action_schema:
+  type: object
+  required:
+    - action_type
+  properties:
+    action_type:
+      type: string
+      enum: [MATCH, REJECT, REQUEST_INFO]
+    requested_field:
+      type: [string, "null"]
+      enum: [age, gender, conditions, medications, labs, null]
+    reasoning:
+      type: string
+
+observation_schema:
+  type: object
+  properties:
+    task_id:
+      type: string
+    task_name:
+      type: string
+    difficulty:
+      type: string
+      enum: [easy, medium, hard]
+    patient:
+      type: object
+    trial_criteria:
+      type: object
+    interaction_history:
+      type: array
+      items:
+        type: object
+    available_actions:
+      type: array
+      items:
+        type: string
+    remaining_steps:
+      type: integer
+
+tasks:
+  - id: task_easy_age_only
+    difficulty: easy
+    objective: Decide eligibility using age boundaries only.
+    expected_decision: MATCH
+  - id: task_medium_age_condition
+    difficulty: medium
+    objective: Decide using age and required/excluded conditions.
+    expected_decision: REJECT
+  - id: task_hard_multifactor
+    difficulty: hard
+    objective: Decide using age, conditions, medications, and labs.
+    expected_decision: REJECT
